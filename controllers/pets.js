@@ -67,7 +67,8 @@ const updatePet = async (req, res) => {
     breed: req.body.breed,
     weight: req.body.weight,
     sizeClass: req.body.sizeClass,
-    temperament: req.body.temperament
+    temperament: req.body.temperament,
+    ownerId: req.body.ownerId
   };
   const response = await mongodb
     .getDb()
