@@ -2,11 +2,13 @@ const validator = require('../helpers/validate');
 
 const savePet = (req, res, next) => {
     const validationRule = {
-        firstName: 'required|string',
-        lastName: 'required|string',
-        email: 'required|email',
-        favoriteColor: 'required|string',
-        birthday: 'string'
+        name: 'required|string',
+        birthday: 'required|string',
+        gender: 'required|string',
+        breed: 'required|string',
+        weight: 'required|numeric|min:1',
+        sizeClass: 'required|string',
+        temperament: 'required|string'
     };
     validator(req.body, validationRule, {}, (err, status) => {
         if (!status) {
@@ -26,8 +28,8 @@ const saveOwner = (req, res, next) => {
         firstName: 'required|string',
         lastName: 'required|string',
         email: 'required|email',
-        favoriteColor: 'required|string',
-        birthday: 'string'
+        phone: 'required|string|min:7',
+        address: 'required|string'
     };
     validator(req.body, validationRule, {}, (err, status) => {
         if (!status) {

@@ -1,7 +1,7 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-const getAll = (req, res) => {
+const getAllPets = (req, res) => {
   mongodb
     .getDb()
     .db()
@@ -16,7 +16,7 @@ const getAll = (req, res) => {
     });
 };
 
-const getSingle = (req, res) => {
+const getSinglePet = (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid pet id to find a pet.');
   }
@@ -96,8 +96,8 @@ const deletePet = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getSingle,
+  getAllPets,
+  getSinglePet,
   createPet,
   updatePet,
   deletePet

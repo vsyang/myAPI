@@ -1,7 +1,7 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-const getAll = (req, res) => {
+const getAllOwners = (req, res) => {
   mongodb
     .getDb()
     .db()
@@ -16,7 +16,7 @@ const getAll = (req, res) => {
     });
 };
 
-const getSingle = (req, res) => {
+const getSingleOwner = (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid owner id to find a owner.');
   }
@@ -92,8 +92,8 @@ const deleteOwner = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
-  getSingle,
+  getAllOwners,
+  getSingleOwner,
   createOwner,
   updateOwner,
   deleteOwner
