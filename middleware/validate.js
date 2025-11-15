@@ -8,7 +8,8 @@ const savePet = (req, res, next) => {
         breed: 'required|string',
         weight: 'required|numeric|min:1',
         sizeClass: 'required|string',
-        temperament: 'required|string'
+        temperament: 'required|string',
+        ownerId: 'string'
     };
     validator(req.body, validationRule, {}, (err, status) => {
         if (!status) {

@@ -91,10 +91,30 @@ const deleteOwner = async (req, res) => {
   }
 };
 
+const getOwnerPets = async (req, res) => {
+  try {
+    const ownerId = req.params.id;
+    const db = mongodb.getDb().db();
+
+    // Find all pets with ownerId
+    const pets = await db.collection('pets').find({ ownerId }).toArray();
+
+    if (pets.length === 0) {
+      return res.status(404).json({ message: 'No pets found for this owner.' });
+    }
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(pets);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving pets for owner', error: err });
+  }
+};
+
 module.exports = {
   getAllOwners,
   getSingleOwner,
   createOwner,
   updateOwner,
-  deleteOwner
+  deleteOwner,
+  getOwnerPets
 };

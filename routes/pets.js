@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const contactsController = require('../controllers/pets');
+const petsController = require('../controllers/pets');
 const validation = require('../middleware/validate');
 
 router.get('/', petsController.getAllPets);
@@ -10,7 +10,7 @@ router.get('/:id', petsController.getSinglePet);
 
 router.post('/', validation.savePet, petsController.createPet);
 
-router.put('/:id', validation.savePet, contactsController.updatePet);
+router.put('/:id', validation.savePet, petsController.updatePet);
 
 router.delete('/:id', petsController.deletePet);
 
