@@ -75,7 +75,7 @@ const deleteOwner = async (req, res) => {
       return res.status(400).json('Must use a valid owner id to delete an owner.');
     }
     const ownerId = new ObjectId(req.params.id);
-    const response = await mongodb.getDb().db().collection('owners').deleteOne({ _id: ownerId }); // use deleteOne
+    const response = await mongodb.getDb().db().collection('owners').deleteOne({ _id: ownerId }); 
     if (response.deletedCount > 0) return res.status(204).send();
     return res.status(404).json({ message: 'Owner not found' });
   } catch (err) {

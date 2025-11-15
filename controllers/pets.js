@@ -81,7 +81,7 @@ const deletePet = async (req, res) => {
       return res.status(400).json('Must use a valid pet id to delete an pet.');
     }
     const petId = new ObjectId(req.params.id);
-    const response = await mongodb.getDb().db().collection('pets').deleteOne({ _id: petId }); // use deleteOne
+    const response = await mongodb.getDb().db().collection('pets').deleteOne({ _id: petId }); 
     if (response.deletedCount > 0) return res.status(204).send();
     return res.status(404).json({ message: 'Pet not found' });
   } catch (err) {
