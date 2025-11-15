@@ -1,38 +1,30 @@
 const mongodb = require('../data/database');
-const ObjectId = require('mongodb').ObjectId;
+const { ObjectId } = require('mongodb');
 
-const getAllPets = (req, res) => {
-  mongodb
-    .getDb()
-    .db()
-    .collection('pets')
-    .find()
-    .toArray((err, lists) => {
-      if (err) {
-        res.status(400).json({ message: err });
-      }
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(lists);
-    });
+const getAllPets = async (req, res) => {
+  try {
+    const pets = await mongodb.getDb().db().collection('pets').find().toArray();
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json(pets);
+  } catch (err) {
+    return res.status(500).json({ message: 'Unable to find pets list', error: err });
+  }
 };
 
-const getSinglePet = (req, res) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid pet id to find a pet.');
+const getSinglePet = async (req, res) => {
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json('Must use a valid pet id to find pet.');
+    }
+    const petId = new ObjectId(req.params.id);
+    const pet = await mongodb.getDb().db().collection('pets').findOne({ _id: petId });
+    if (!pet) return res.status(404).json({ message: 'Pet not found' });
+
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json(pet);
+  } catch (err) {
+    return res.status(500).json({ message: 'Error fetching pet', error: err });
   }
-  const userId = new ObjectId(req.params.id);
-  mongodb
-    .getDb()
-    .db()
-    .collection('pets')
-    .find({ _id: userId })
-    .toArray((err, result) => {
-      if (err) {
-        res.status(400).json({ message: err });
-      }
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(result[0]);
-    });
 };
 
 const createPet = async (req, res) => {
@@ -44,7 +36,7 @@ const createPet = async (req, res) => {
     weight: req.body.weight,
     sizeClass: req.body.sizeClass,
     temperament: req.body.temperament,
-    ownerId: req.body.ownerId
+    // petId: req.body.petId
   };
   const response = await mongodb.getDb().db().collection('pets').insertOne(pet);
   if (response.acknowledged) {
@@ -68,7 +60,7 @@ const updatePet = async (req, res) => {
     weight: req.body.weight,
     sizeClass: req.body.sizeClass,
     temperament: req.body.temperament,
-    ownerId: req.body.ownerId
+    // petId: req.body.petId
   };
   const response = await mongodb
     .getDb()
@@ -84,16 +76,16 @@ const updatePet = async (req, res) => {
 };
 
 const deletePet = async (req, res) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid pet id to delete a pet.');
-  }
-  const userId = new ObjectId(req.params.id);
-  const response = await mongodb.getDb().db().collection('pets').remove({ _id: userId }, true);
-  console.log(response);
-  if (response.deletedCount > 0) {
-    res.status(204).send();
-  } else {
-    res.status(500).json(response.error || 'Some error occurred while deleting the pet.');
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json('Must use a valid pet id to delete an pet.');
+    }
+    const petId = new ObjectId(req.params.id);
+    const response = await mongodb.getDb().db().collection('pets').deleteOne({ _id: petId }); // use deleteOne
+    if (response.deletedCount > 0) return res.status(204).send();
+    return res.status(404).json({ message: 'Pet not found' });
+  } catch (err) {
+    return res.status(500).json({ message: 'Error deleting pet', error: err });
   }
 };
 

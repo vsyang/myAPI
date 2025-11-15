@@ -14,6 +14,6 @@ router.put('/:id', validation.saveOwner, ownersController.updateOwner);
 
 router.delete('/:id', ownersController.deleteOwner);
 
-router.get('/:id/pets', ownersController.getOwnerPets);
+// router.get('/:id/pets', ownersController.getOwnerPets);
 
 module.exports = router;
