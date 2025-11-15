@@ -58,6 +58,7 @@ const updatePet = async (req, res) => {
     birthday: req.body.birthday,
     gender: req.body.gender,
     breed: req.body.breed,
+    color: req.body.color,
     weight: req.body.weight,
     sizeClass: req.body.sizeClass,
     temperament: req.body.temperament,
@@ -68,7 +69,6 @@ const updatePet = async (req, res) => {
     .db()
     .collection('pets')
     .replaceOne({ _id: userId }, pet);
-  console.log(response);
   if (response.modifiedCount > 0) {
     res.status(204).send();
   } else {

@@ -316,6 +316,9 @@
                 "breed": {
                   "example": "any"
                 },
+                "color": {
+                  "example": "any"
+                },
                 "weight": {
                   "example": "any"
                 },
