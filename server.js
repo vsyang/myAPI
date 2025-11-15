@@ -22,6 +22,16 @@ process.on('uncaughtException', (err, origin) => {
     process.exit(1); 
 });
 
+// Error handler
+app.use((req, res) => {
+    res
+        .status(404)
+        .send(`
+        <h1>Where did it go?!</h1>
+        <p>Seems like this page doesn't exist...</p>
+        <a href="/">Go Back</a>
+        `);
+});
 
 mongodb.initDb((err) => {
     if (err) {
