@@ -7,6 +7,7 @@ const savePet = (req, res, next) => {
         gender: 'required|string',
         breed: 'required|string',
         weight: 'required|numeric|min:1',
+        color: 'required|string',
         sizeClass: 'required|string',
         temperament: 'required|string',
         ownerId: 'string'

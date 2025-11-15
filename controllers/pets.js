@@ -33,6 +33,7 @@ const createPet = async (req, res) => {
     birthday: req.body.birthday,
     gender: req.body.gender,
     breed: req.body.breed,
+    color: req.body.color,
     weight: req.body.weight,
     sizeClass: req.body.sizeClass,
     temperament: req.body.temperament,
