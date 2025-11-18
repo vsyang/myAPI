@@ -48,7 +48,7 @@ const createPet = async (req, res) => {
     if (response.acknowledged) {
       return res.status(201).json(response);
     } else {
-      res.status(500).json(response.error || 'Some error occurred while creating the pet.');
+      return res.status(500).json(response.error || 'Some error occurred while creating the pet.');
     }
   } catch (error) {
     return res
