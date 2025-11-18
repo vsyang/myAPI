@@ -5,7 +5,7 @@
     "description": "A simple API to view owners and their pets",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "pets-owners.onrender.com",
   "basePath": "/",
   "schemes": [
     "http",

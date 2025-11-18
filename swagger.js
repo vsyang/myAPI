@@ -5,7 +5,7 @@ const doc = {
         title: 'Pets & Owners API',
         description: 'A simple API to view owners and their pets'
     },
-    host: 'localhost:3000',
+    host: 'pets-owners.onrender.com',
     schemes: ['http', 'https']
 };
 

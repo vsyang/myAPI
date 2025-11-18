@@ -28,53 +28,75 @@ const getSinglePet = async (req, res) => {
 };
 
 const createPet = async (req, res) => {
-  const pet = {
-    name: req.body.name,
-    birthday: req.body.birthday,
-    gender: req.body.gender,
-    breed: req.body.breed,
-    color: req.body.color,
-    weight: req.body.weight,
-    sizeClass: req.body.sizeClass,
-    temperament: req.body.temperament,
-    // petId: req.body.petId
-  };
-  const response = await mongodb.getDb().db().collection('pets').insertOne(pet);
-  if (response.acknowledged) {
-    res.status(201).json(response);
-  } else {
-    res.status(500).json(response.error || 'Some error occurred while creating the pet.');
+  try {
+    const pet = {
+      name: req.body.name,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      breed: req.body.breed,
+      color: req.body.color,
+      weight: req.body.weight,
+      sizeClass: req.body.sizeClass,
+      temperament: req.body.temperament,
+    };
+    const response = await mongodb
+      .getDb()
+      .db()
+      .collection('pets')
+      .insertOne(pet);
+    
+    if (response.acknowledged) {
+      return res.status(201).json(response);
+    } else {
+      res.status(500).json(response.error || 'Some error occurred while creating the pet.');
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: 'Server error while creating the pet' }) 
   }
 };
 
 const updatePet = async (req, res) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid pet id to update a pet.');
-  }
-  const userId = new ObjectId(req.params.id);
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json('Must use a valid pet id to update a pet.');
+    }
 
-  const pet = {
-    name: req.body.name,
-    birthday: req.body.birthday,
-    gender: req.body.gender,
-    breed: req.body.breed,
-    color: req.body.color,
-    weight: req.body.weight,
-    sizeClass: req.body.sizeClass,
-    temperament: req.body.temperament,
-    // petId: req.body.petId
-  };
-  const response = await mongodb
-    .getDb()
-    .db()
-    .collection('pets')
-    .replaceOne({ _id: userId }, pet);
-  if (response.modifiedCount > 0) {
-    res.status(204).send();
-  } else {
-    res.status(500).json(response.error || 'Some error occurred while updating the pet.');
+    const userId = new ObjectId(req.params.id);
+
+    const pet = {
+      name: req.body.name,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      breed: req.body.breed,
+      color: req.body.color,
+      weight: req.body.weight,
+      sizeClass: req.body.sizeClass,
+      temperament: req.body.temperament
+    };
+
+    const response = await mongodb
+      .getDb()
+      .db()
+      .collection('pets')
+      .replaceOne({ _id: userId }, pet);
+
+    if (response.modifiedCount > 0) {
+      return res.status(204).send();
+    } else {
+      return res
+        .status(500)
+        .json(response.error || 'Some error occurred while updating the pet.');
+    }
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ error: 'Server error while updating the pet.' });
   }
 };
+
 
 const deletePet = async (req, res) => {
   try {
