@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const passport = require('passport');
 
 // Main resource routes
 router.use('/owners', require('./owners'));
