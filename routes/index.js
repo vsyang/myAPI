@@ -7,7 +7,20 @@ router.use('/pets', require('./pets'));
 // Swagger docs route
 router.use('/', require('./swagger'));
 
-// // Example default route
+// Take user to GitHub login to be authenticated
+router.get('/login', passport.authenticate('github'), (req, res) => {});
+
+// Logged out main screen
+router.get('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
+
+module.exports = router;
+
+// Something I did for fun before needing OAuth
 // router.get('/', (req, res) => {
 //   //#swagger.tags=['Hello World']
 //   res.send(`
@@ -19,16 +32,3 @@ router.use('/', require('./swagger'));
 //       <li><a href="/api-docs">Swagger Documentation</a></li>
 //   `);
 // });
-
-router.get('/login', passport.authenticate('github'), (req, res) => { });
-
-router.get('/logout', function (req, res, next) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/')
-  });
-});
-
-module.exports = router;
